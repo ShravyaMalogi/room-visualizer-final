@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+
+{% block title %}Celes'tile Visualizer{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+
+<!-- Top Bar -->
+<header class="topbar">
+  <div class="logo">Celes'tile Visualizer</div>
+
+  <div class="top-actions">
+    <button class="btn ghost" id="resetBtn">Reset</button>
+    <button class="btn ghost" id="exportBtn">Export</button>
+
+    <label for="upload" class="btn primary">
+      Upload Room
+    </label>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar texture-panel {% if not enable_textures %}disabled{% endif %}">
+    <h3>Texture Library</h3>
+    <p class="subtitle">Select a material to apply</p>
+
+    <!-- Filters -->
+    <div class="filters">
+      <button class="filter active" data-type="wall">Wall</button>
+      <button class="filter" data-type="single">Single Piece</button>
+      <button class="filter" data-type="floor">Floor</button>
+    </div>
+
+    <!-- Texture List -->
+    <div class="texture-list">
+
+      <!-- WALL TEXTURES -->
+      {% for tex in textures.wall %}
+      <div class="texture-card" data-type="wall">
+        <img
+          src="{{ url_for('serve_texture', filename='walls/' ~ tex) }}"
+          class="texture-thumb"
+          data-texture="{{ tex }}"
+          data-type="wall"
+          alt="wall texture">
+        <span>{{ tex }}</span>
+      </div>
+      {% endfor %}
+
+      <!-- FLOOR TEXTURES -->
+      {% for tex in textures.floor %}
+      <div class="texture-card" data-type="floor" style="display:none;">
+        <img
+          src="{{ url_for('serve_texture', filename='floors/' ~ tex) }}"
+          class="texture-thumb"
+          data-texture="{{ tex }}"
+          data-type="floor"
+          alt="floor texture">
+        <span>{{ tex }}</span>
+      </div>
+      {% endfor %}
+
+      <!-- SINGLE PIECE TEXTURES -->
+      {% for tex in textures.single %}
+      <div class="texture-card" data-type="single" style="display:none;">
+        <img
+          src="{{ url_for('serve_texture', filename='single_piece/' ~ tex) }}"
+          class="texture-thumb"
+          data-texture="{{ tex }}"
+          data-type="single"
+          alt="wall single piece">
+        <span>{{ tex }}</span>
+      </div>
+      {% endfor %}
+
+    </div>
+  </aside>
+
+  <!-- Main Canvas -->
+  <main class="canvas">
+    <form id="uploadForm"
+          action="{{ url_for('predict_image_room') }}"
+          method="POST"
+          enctype="multipart/form-data">
+
+      <input type="file" id="upload" name="image" hidden>
+
+      <div id="loadingMessage" class="loading-message">
+        <p>Please wait while the image is being processed...</p>
+      </div>
+
+      {% if not room %}
+      <div class="start-box">
+        <div class="icon">🖼️</div>
+        <h2>Start Designing</h2>
+        <p>Upload a photo of your room to begin.</p>
+
+        <label for="upload" class="btn primary large">
+          Upload Photo
+        </label>
+      </div>
+      {% else %}
+      <div class="image-area">
+        <img
+          id="imageResult"
+          src="{{ room }}?v={{ uid }}"
+          class="img-fluid rounded shadow-sm"
+          alt="Room Preview">
+      </div>
+      {% endif %}
+    </form>
+  </main>
+
+</div>
+
+<!-- UID for JS -->
+<script>
+  window.currentUID = "{{ uid }}";
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/image_upload.js') }}"></script>
+<script src="{{ url_for('static', filename='js/texture_click.js') }}"></script>
+{% endblock %}

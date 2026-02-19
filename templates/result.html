@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Room Visualizer{% endblock %}
+
+{% block content %}
+<div class="hero-wrapper">
+  <div class="hero-card">
+    <h1 class="hero-title">ROOM WALL VISUALIZER</h1>
+    <p>Upload a room image and apply textures using AI.</p>
+
+    <a href="{{ url_for('room') }}" class="btn btn-primary mt-3">
+      Start Designing
+    </a>
+  </div>
+</div>
+{% endblock %}

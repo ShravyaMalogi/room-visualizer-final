@@ -1,0 +1,13 @@
+Flask
+kornia
+loguru
+matplotlib
+numpy
+opencv-python
+Pillow
+pytorch_lightning
+scipy
+torch
+torchvision
+tqdm
+onegan@git+https://github.com/leVirve/OneGan

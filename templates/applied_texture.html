@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Preview{% endblock %}
+
+{% block content %}
+<div class="preview-wrapper">
+  <div class="preview-card">
+
+    <h2 class="text-center mb-3">TEXTURED ROOM PREVIEW</h2>
+
+    <div class="image-area">
+      <img src="{{ new_room }}">
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="{{ url_for('room') }}" class="btn btn-dark">
+        ← Back
+      </a>
+      <a href="{{ new_room }}" download class="btn btn-primary">
+        Download
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
